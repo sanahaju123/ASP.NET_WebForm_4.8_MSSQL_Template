@@ -1,43 +1,71 @@
-﻿<%@ Page Title="TaskManagement" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="TaskManagement.aspx.cs" Inherits="TaskManagementApp" %>
+﻿<%@ Page Title="TaskManagement" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="TaskManagement.aspx.cs" Inherits="TaskManagementApp.TaskManagement" %>
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>Task Management</title>
-</head>
-<body>
-    <form id="form1" runat="server">
-        <div>
-            <!-- Display the list of tasks using a GridView -->
-            <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False">
-                <Columns>
-                    <asp:BoundField DataField="Id" HeaderText="ID" />
-                    <asp:BoundField DataField="Title" HeaderText="Title" />
-                    <asp:BoundField DataField="DueDate" HeaderText="Due Date" DataFormatString="{0:yyyy-MM-dd}" />
-                    <asp:TemplateField HeaderText="Is Completed">
-                        <ItemTemplate>
-                            <asp:Label runat="server" Text='<% Eval("IsCompleted") %>'></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Actions">
-                        <ItemTemplate>
-                            <asp:HyperLink ID="lnkEdit" runat="server" Text="Edit" NavigateUrl='<% "TaskManagementApp.aspx?action=edit&id=" + Eval("Id") %>' />
-                            &nbsp;
-                            <asp:LinkButton ID="lnkDelete" runat="server" Text="Delete" OnClick="DeleteTask" CommandArgument='<% Eval("Id") %>' />
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                </Columns>
-            </asp:GridView>
+<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-            <!-- Input fields for Title, Due Date, Is Completed for adding/editing tasks -->
-            <asp:TextBox ID="txtTitle" runat="server"></asp:TextBox>
-            <asp:CheckBox ID="chkIsCompleted" runat="server" />
-            <asp:Calendar ID="calDueDate" runat="server" />
+    
+        <section id="main-content">
+          <section class="wrapper">
+              <div class="row">
+                  <div class="col-lg-12">
+                      <section class="panel">
+                          <header class="panel-heading">
+                              <div class="col-md-4 col-md-offset-4">
+                                  <h1>Manage Tasks</h1>
+                              </div>
+                          
+                          </header>
+                          <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-4 col-md-offset-1">
+                                        <div class="form-group">
+                                          <asp:Label runat="server" AssociatedControlID="txtTitle"><b>Task Title</b></asp:Label><br />
+                                          <asp:TextBox runat="server" required="required" Enabled="True" name="BrandName" ID="txtTitle" class="form-control input-sm" placeholder="Task Title"></asp:TextBox>
 
-            <!-- Add/Edit and Cancel buttons -->
-            <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="SaveTask" />
-            <asp:Button ID="btnCancel" runat="server" Text="Cancel" OnClick="CancelTask" />
-        </div>
-    </form>
-</body>
-</html>
+                                       </div> 
+                                   </div>
+                                      <div class="col-md-4 col-md-offset-1">
+                                        <div class="form-group">
+                                          <asp:Label runat="server" AssociatedControlID="txtIsCompleted"><b>Is task Completed?</b></asp:Label><br />
+                                          <asp:TextBox runat="server" required="required" Enabled="True" name="BrandName" ID="txtIsCompleted" class="form-control input-sm" placeholder="Task Title"></asp:TextBox>
+
+                                       </div> 
+                                   </div>
+                                     <div class="col-md-4 col-md-offset-1">
+                                       <div class="form-group">
+                                         <asp:Label runat="server" AssociatedControlID="txtDueDate"><b>Due Date</b></asp:Label><br />
+                                          <asp:TextBox runat="server" required="required" TextMode="Date" Enabled="True" name="BrandName" ID="txtDueDate" class="form-control input-sm" placeholder="Due date "></asp:TextBox>
+                                       </div> 
+                                  </div>
+                                   </div>
+
+                       
+                               <div class="row">
+                                    <div class="col-md-10 col-md-offset-1">
+                                  <div class="form-group">
+                                      <asp:Button Text="Save" ID="btnsave" OnClick="btnsave_Click"  CssClass="btn btn-primary btn-lg" Width="220px" runat="server" />
+                                      <asp:Button Text="Update" ID="btnupdate"  OnClick="btnupdate_Click" CssClass="btn btn-primary btn-lg" Width="220px" runat="server" />
+                                     <asp:Button Text="Delete" ID="btndlt"  OnClick="btndlt_Click"  CssClass="btn btn-danger btn-lg" Width="220px" runat="server" />
+                                      <asp:Label Text="" ForeColor="Green" Font-Bold="true" ID="lblmessage" CssClass="label label-success" runat="server" />
+                                       </div> 
+                                  </div>
+                                  
+                                   </div>
+                              <div class="row">
+                                  <div class="col-md-10 col-md-offset-1">
+                                      <div class="form-group">
+                                          <div class="table-responsive">
+                                              <asp:GridView ID="gv"  Width="100%" AutoGenerateSelectButton="true" SelectedRowStyle-BackColor="Green" OnSelectedIndexChanged="gv_SelectedIndexChanged" runat="server"></asp:GridView>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                                    
+                               </div>
+                      </section>
+              </div>
+            </div>
+         </section>
+     </section>      
+
+
+</asp:Content>

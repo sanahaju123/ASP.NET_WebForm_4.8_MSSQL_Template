@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FitnessTrackerApp.Tests.TestCases
+namespace TaskManagementApp.Tests.TestCases
 {
     public class TestCaseDto
     {

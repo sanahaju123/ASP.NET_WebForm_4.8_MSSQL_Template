@@ -12,7 +12,7 @@ namespace TaskManagementApp.DAL
     {
         public DbSet<Model.TaskModel> TaskModels { get; set; }
 
-        public TaskDbContext() : base("YourConnectionStringName")
+        public TaskDbContext() : base("ConnStr")
         {
         }
     }

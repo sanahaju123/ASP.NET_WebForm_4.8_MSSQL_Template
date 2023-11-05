@@ -9,10 +9,9 @@ namespace TaskManagementApp.DAL.Interfaces
 {
     public interface ITaskRepository
     {
-        Model.TaskModel GetById(int id);
-        List<Model.TaskModel> GetAll();
-        void Add(Model.TaskModel task);
-        void Update(Model.TaskModel task);
-        void Delete(int id);
+        string GetAll();
+        string Add();
+        string Update();
+        string Delete();
     }
 }

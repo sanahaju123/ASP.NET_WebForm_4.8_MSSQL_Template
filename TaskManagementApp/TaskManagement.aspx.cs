@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Web.UI;
+using System.Web.UI.WebControls;
+using TaskManagementApp.DAL;
 
 namespace TaskManagementApp
 {
     public partial class TaskManagement : Page
     {
+        datalayer dl;
         private readonly DAL.Interfaces.ITaskService _taskService;
 
         public TaskManagement()
@@ -14,77 +17,50 @@ namespace TaskManagementApp
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                string action = Request.QueryString["action"];
-                int taskId = 0;
-                if (int.TryParse(Request.QueryString["id"], out taskId))
-                {
-                    if (action == "edit")
-                    {
-                        // Load task details for editing
-                        Model.TaskModel task = _taskService.GetById(taskId);
-                        if (task != null)
-                        {
-                            txtTitle.Text = task.Title;
-                            calDueDate.SelectedDate = task.DueDate;
-                            chkIsCompleted.Checked = task.IsCompleted;
-                            btnSave.Text = "Update";
-                        }
-                    }
-                    else if (action == "delete")
-                    {
-                        // Handle the delete action
-                        _taskService.Delete(taskId);
-                    }
-                }
+            var query = _taskService.GetAll();
+            dl = new datalayer();
+            dl.fillgridView(query, gv);
 
-                // Load the list of tasks into GridView1
-                GridView1.DataSource = _taskService.GetAll();
-                GridView1.DataBind();
-            }
+        }
+        static string Id;
+        protected void gv_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Id = gv.SelectedRow.Cells[1].Text.ToString();
+            txtTitle.Text = gv.SelectedRow.Cells[2].Text.ToString();
+            txtIsCompleted.Text = gv.SelectedRow.Cells[3].Text.ToString();
+            txtDueDate.Text = gv.SelectedRow.Cells[4].Text.ToString();
+           
         }
 
-        protected void SaveTask(object sender, EventArgs e)
+        protected void btnsave_Click(object sender, EventArgs e)
         {
-            int taskId = 0;
-            if (int.TryParse(Request.QueryString["id"], out taskId))
-            {
-                // Editing an existing task
-                Model.TaskModel task = _taskService.GetById(taskId);
-                if (task != null)
-                {
-                    task.Title = txtTitle.Text;
-                    task.DueDate = calDueDate.SelectedDate;
-                    task.IsCompleted = chkIsCompleted.Checked;
-                    _taskService.Update(task);
-                }
-            }
-            else
-            {
-                // Adding a new task
-                Model.TaskModel newTask = new Model.TaskModel
-                {
-                    Title = txtTitle.Text,
-                    DueDate = calDueDate.SelectedDate,
-                    IsCompleted = chkIsCompleted.Checked
-                };
-                _taskService.Add(newTask);
-            }
+            var query = _taskService.Add();
+            string qry = query + txtTitle.Text + "','" + txtIsCompleted.Text + "','" + txtDueDate.Text + "')";
+            lblmessage.Text = dl.insertUpdateCreateOrDelete(qry);
 
-            // Redirect back to the same page
-            Response.Redirect("TaskManagement.aspx");
+            
+            txtTitle.Text = "";
+            txtIsCompleted.Text = "";
+            txtDueDate.Text = "";
+        
         }
 
-        protected void CancelTask(object sender, EventArgs e)
+        protected void btnupdate_Click(object sender, EventArgs e)
         {
-            // Redirect back to the same page
-            Response.Redirect("TaskManagement.aspx");
+            var query = _taskService.Update();
+            string qry = query + txtTitle.Text + "',IsCompleted='" + txtIsCompleted.Text + "',DueDate='" + txtDueDate.Text;
+            lblmessage.Text = dl.insertUpdateCreateOrDelete(qry);
+            txtTitle.Text = "";
+            txtIsCompleted.Text = "";
+            txtDueDate.Text = "";
+        
         }
 
-        protected void DeleteTask(object sender, EventArgs e)
+        protected void btndlt_Click(object sender, EventArgs e)
         {
-            // Handle the delete action (This is typically done in the Page_Load method)
+            var query = _taskService.Delete();
+            string qry = query + Id + "'";
+            lblmessage.Text = dl.insertUpdateCreateOrDelete(qry);
         }
     }
 }

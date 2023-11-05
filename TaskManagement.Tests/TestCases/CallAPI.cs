@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using static FitnessTrackerApp.Tests.TestCases.TestCaseDto;
+using static TaskManagementApp.Tests.TestCases.TestCaseDto;
 
-namespace FitnessTrackerApp.Tests.TestCases
+namespace TaskManagementApp.Tests.TestCases
 {
     public class CallAPI
     {

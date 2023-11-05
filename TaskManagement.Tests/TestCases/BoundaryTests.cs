@@ -1,42 +1,33 @@
 ﻿
-using FitnessTrackerApp.DAL;
-using FitnessTrackerApp.DAL.Interface;
-using FitnessTrackerApp.DAL.Repository;
-using FitnessTrackerApp.Models;
+
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using TaskManagementApp.DAL.Interfaces;
+using TaskManagementApp.DAL.Services;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace FitnessTrackerApp.Tests.TestCases
+namespace TaskManagementApp.Tests.TestCases
 {
     public class BoundaryTests
     {
         private readonly ITestOutputHelper _output;
-        public readonly Mock<IFitnessTrackerInterface> fitnesstrackerinterface = new Mock<IFitnessTrackerInterface>();
-        private readonly FitnessTrackerRepository repository;
-        private readonly IFitnessTrackerInterface _Repository;
-        private readonly Workout _workout;
+        private readonly ITaskService _taskService;
+        public readonly Mock<ITaskRepository> taskservice = new Mock<ITaskRepository>();
 
         private static string type = "Boundary";
 
         public BoundaryTests(ITestOutputHelper output)
         {
+            _taskService = new TaskService(taskservice.Object);
             _output = output;
-            _workout = new Workout
-            {
-                Id=1,
-                Date=DateTime.Now,
-                Exercise="Exercise",
-                Reps=10,
-                Sets=10
-            };
         }
 
         [Fact]
-        public async Task<bool> Testfor_Exercise_NotNull()
+        public async Task<bool> Testfor_Add_Task_NotNull()
         {
             //Arrange
             var res = false;
@@ -47,20 +38,11 @@ namespace FitnessTrackerApp.Tests.TestCases
             //Action
             try
             {
-                var workout = new Workout { Id = 1, Exercise = "Workout 1" };
-                _Repository.InsertWorkout(workout);
-
-                // Act
-                workout.Exercise = "Updated Workout";
-                repository.UpdateWorkout(workout);
-                repository.Save();
-
-                // Assert
-                var updatedWorkout = await repository.GetWorkoutByID(1);
-
+                taskservice.Setup(repos => repos.Add()).Returns("");
+                var result = _taskService.Add();
 
                 //Assertion
-                if (updatedWorkout.Exercise == null)
+                if (result!= null)
                 {
                     res = true;
                 }
@@ -87,7 +69,7 @@ namespace FitnessTrackerApp.Tests.TestCases
         }
 
         [Fact]
-        public async Task<bool> Testfor_Set_NotNull()
+        public async Task<bool> Testfor_Delete_Task_NotNull()
         {
             //Arrange
             var res = false;
@@ -98,19 +80,11 @@ namespace FitnessTrackerApp.Tests.TestCases
             //Action
             try
             {
-                var workout = new Workout { Id = 1, Exercise = "Workout 1" };
-             
-
-                // Act
-                workout.Exercise = "Updated Workout";
-                repository.DeleteWorkout(1);
-                repository.Save();
-
-                // Assert
-                var updatedWorkout = await repository.GetWorkoutByID(1);
+                taskservice.Setup(repos => repos.Delete()).Returns("");
+                var result = _taskService.Delete();
 
                 //Assertion
-                if (updatedWorkout.Sets == null)
+                if (result!= null)
                 {
                     res = true;
                 }
@@ -137,7 +111,7 @@ namespace FitnessTrackerApp.Tests.TestCases
         }
 
         [Fact]
-        public async Task<bool> Testfor_Reps_NotNull()
+        public async Task<bool> Testfor_AddTask_ReturnsString()
         {
             //Arrange
             var res = false;
@@ -148,19 +122,11 @@ namespace FitnessTrackerApp.Tests.TestCases
             //Action
             try
             {
-                var workout = new Workout { Id = 1, Exercise = "Workout 1" };
-                
-
-                // Act
-                workout.Exercise = "Updated Workout";
-                repository.DeleteWorkout(1);
-                repository.Save();
-
-                // Assert
-                var updatedWorkout = await repository.GetWorkoutByID(1);
+                taskservice.Setup(repos => repos.Add()).Returns("");
+                var result = _taskService.Add();
 
                 //Assertion
-                if (updatedWorkout.Reps == null)
+                if (result is string)
                 {
                     res = true;
                 }
@@ -187,7 +153,7 @@ namespace FitnessTrackerApp.Tests.TestCases
         }
 
         [Fact]
-        public async Task<bool> Testfor_Date_NotNull()
+        public async Task<bool> Testfor_DeleteTask_ReturnsString()
         {
             //Arrange
             var res = false;
@@ -198,19 +164,11 @@ namespace FitnessTrackerApp.Tests.TestCases
             //Action
             try
             {
-                var workout = new Workout { Id = 1, Exercise = "Workout 1" };
-             
-
-                // Act
-                workout.Exercise = "Updated Workout";
-                repository.DeleteWorkout(1);
-                repository.Save();
-
-                // Assert
-                var updatedWorkout = await repository.GetWorkoutByID(1);
+                taskservice.Setup(repos => repos.Delete()).Returns("");
+                var result = _taskService.Delete();
 
                 //Assertion
-                if (updatedWorkout.Date == null)
+                if (result is string)
                 {
                     res = true;
                 }

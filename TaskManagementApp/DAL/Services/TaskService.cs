@@ -17,29 +17,29 @@ namespace TaskManagementApp.DAL.Services
             _repository = repository;
         }
 
-        public Model.TaskModel GetById(int id)
+
+        public string GetAll()
         {
-            return _repository.GetById(id);
+            //Write your code here
+            throw new NotImplementedException(); 
         }
 
-        public List<Model.TaskModel> GetAll()
+        public string Add()
         {
-            return _repository.GetAll();
+            //Write your code here
+            throw new NotImplementedException();
         }
 
-        public void Add(Model.TaskModel task)
+        public string Update()
         {
-            _repository.Add(task);
+            //Write your code here
+            throw new NotImplementedException();
         }
 
-        public void Update(Model.TaskModel task)
+        public string Delete()
         {
-            _repository.Update(task);
-        }
-
-        public void Delete(int id)
-        {
-            _repository.Delete(id);
+            //Write your code here
+            throw new NotImplementedException();
         }
     }
 }
